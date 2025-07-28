@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皮卡导航中心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0d1021, #16213e, #0a1a40);
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* 头部样式 */
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .logo-icon {
+            font-size: 3.5rem;
+            color: #4ecca3;
+            animation: pulse 2s infinite;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(78, 204, 163, 0.1);
+            border-radius: 50%;
+            border: 3px solid rgba(78, 204, 163, 0.3);
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4ecca3, #00ffcc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(78, 204, 163, 0.7);
+            margin-top: 15px;
+        }
+
+        .tagline {
+            color: #a0d7e7;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            text-align: center;
+            max-width: 600px;
+            opacity: 0.8;
+        }
+
+        /* 主内容区 */
+        .navigation {
+            background: rgba(20, 25, 46, 0.85);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(78, 204, 163, 0.15);
+            margin: 0 auto;
+        }
+
+        .nav-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .nav-header i {
+            font-size: 2.5rem;
+            color: #4ecca3;
+            margin-bottom: 15px;
+        }
+
+        .nav-header h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4ecca3, #00ffcc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .nav-item {
+            background: rgba(30, 35, 60, 0.7);
+            border-radius: 18px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4ecca3, #00ffcc);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(40, 45, 70, 0.8);
+            transform: translateY(-8px);
+            border-color: rgba(78, 204, 163, 0.3);
+            box-shadow: 0 10px 25px rgba(78, 204, 163, 0.2);
+        }
+
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+
+        .nav-item i {
+            font-size: 2.2rem;
+            color: #4ecca3;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .nav-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #e0f7fa;
+        }
+
+        .nav-item p {
+            color: #b0c4de;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: rgba(78, 204, 163, 0.2);
+            border: 1px solid #4ecca3;
+            border-radius: 30px;
+            color: #d1f7ec;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 1.05rem;
+        }
+
+        .nav-btn:hover {
+            background: #4ecca3;
+            color: #0a1929;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 204, 163, 0.4);
+        }
+
+        /* 分类标题 */
+        .category-title {
+            grid-column: 1 / -1;
+            font-size: 1.6rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(78, 204, 163, 0.3);
+            color: #4ecca3;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 0 30px;
+            margin-top: 50px;
+            color: #8a9bb0;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #4ecca3;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #00ffcc;
+            text-shadow: 0 0 10px rgba(78, 204, 163, 0.7);
+        }
+
+        /* 动画 */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 204, 163, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(78, 204, 163, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 204, 163, 0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .nav-links {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .navigation {
+                padding: 25px 15px;
+            }
+            
+            .nav-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-text {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+            
+            .nav-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+            
+                  
+                </div>
+               
+               
+        </header>
+        
+        <div class="navigation">
+            <div class="nav-header">            
+            </div>
+          
+            <div class="nav-links">
+            
+            <div class="nav-item">
+                    <h3>魏雪莹备用群
+                    </h3>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=P7zDyUGA6SlRZfyt9mNlYj5pQy4tyieW%2BoHy4hsYQPTJ36Y3BQkjxhYfG7b%2FM2oa&busi_data=eyJncm91cENvZGUiOiI1ODcwMzI2NjgiLCJ0b2tlbiI6IkxrUUlMRjB3cHgzbE1vdlBiTGJPajhBdkpReDNob0U1b21aQTJ3Vk0zQ3lTaEw1V2RXelMwQTFXckpyQzhDN04iLCJ1aW4iOiIxOTY2MzMwMzE5In0%3D&data=aObKrwhoZaxYdk8bBO3abMX4KQL9SvR9plE4zMa_aXVvnqHRr2n6dOzO4k0OwBf8TsDTWcfeZetR5QVn01AEow&svctype=4&tempid=h5_group_info" class="nav-btn">加入</a>
+                    
+                    
+                </div>
+                
+<div class="nav-item">
+                    <h3>皮卡翻车群(复活了，聊天)
+                    </h3>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=1l4f7JNmC5%2BgwuDYllEvvw7y9%2Burgh9tkalNM6ypzY4M2VdweVfGdCb4mN90vhe1&busi_data=eyJncm91cENvZGUiOiI1Njg4NzE0MjYiLCJ0b2tlbiI6ImRndzVJYlhOSlNQcTBpTU9XUGsxV3BPY0NoZkVYVThiRENtVVVlZy8vN2RENEUwblRCVXA5YVpFZ1RhaDV2NUIiLCJ1aW4iOiIxOTY2MzMwMzE5In0%3D&data=FTFChZ2b5hPhdttvTvHHRiv2xRYrpbUg_DBhgNv31ucjpzBmm5r19k09b2ufQX4Cz-fSDDWJgp1TxoXdtz6JNQ&svctype=4&tempid=h5_group_info" class="nav-btn">加入</a>
+                    
+                    
+                </div>
+            
+        
+            <div class="nav-item">
+                    <h3>皮卡备用群(聊天)
+                    </h3>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=n%2Fgad%2BIaoDPn2G3pOzFvTTOEFQb%2Ff7G12uCbXwAoDsoVLy7v06crGL965OCb7jwK&busi_data=eyJncm91cENvZGUiOiIxMDQ5NTUwOTI1IiwidG9rZW4iOiI4Szl4ZUVaQXJ0VVlvNHljQldlSGVVMGRsczlyVnFtR1RoSFhaSWc3Y2lXc0ZoNmhpWXNNSWlRWkphR2s2VnYrIiwidWluIjoiMTk2NjMzMDMxOSJ9&data=MMMAQg6C1RmDXtkNskEvCNFEbIP38eYd-s7X5-dwGCWAptoe6FxYgvguTDMC5naeFv97A9LbA0lracmOvz_4oA&svctype=4&tempid=h5_group_info" class="nav-btn">加入</a>
+                    
+                    
+                </div>
+            
+            <div class="nav-item">
+                    <h3>皮卡新的备用群(禁言)
+                    </h3>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=93zHuPMoEsNJ3ktOR%2B4%2BIPMVy9yb5X9XkDH9qrZyLatB2vHyfNwwQ5G3NugjJGAK&busi_data=eyJncm91cENvZGUiOiIxMDQxMjQ0MjI5IiwidG9rZW4iOiJDdVh1dGNuUEVNN3FFRmVWR1BLejJWYmlVUytMSzZCZHRUL1VoQldTUVJtNCtxNUc5ZzM4cnRWVzVsZXI2bTJvIiwidWluIjoiMTk2NjMzMDMxOSJ9&data=AvVKrLAXKCyKR-X5BqddU2n-ucdS33fB4D_m77xkxZGzs0t4hH6Th9Sz-M0rme1Q-b7ptKjz6kmHVat7IW2KwA&svctype=4&tempid=h5_group_info" class="nav-btn">加入</a>
+                    
+                    
+                </div>
+                
+                <div class="nav-item">
+                    <h3>无语的车群
+                    </h3>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=xfLKD%2FM8stkNSnjy%2BVA9Okne9LldJL3LF2VZY1Mwugtuke17VyJuCMd8tyyBmlOl&busi_data=eyJncm91cENvZGUiOiI2MDQ1NzQyMzciLCJ0b2tlbiI6Ik9MOTQ3VklxUHZRVXpVZk5jUzllNWxaK3JlS2J4RzdzNnl2UXp3bTJYUkxVOG5zTTlSTzQ0TjdwL0RMT2RCaGIiLCJ1aW4iOiIxMDA1Mzg0NDE4In0%3D&data=8jcElMlcn27vO4nAa-sSkaQaDUzJ_2VFz_uPreDWpShC0806PkImYru_3-WCn8oBiwGSmSXYbdzVqyTUMgzAwQ&svctype=4&tempid=h5_group_info" class="nav-btn">官网</a>
+                    
+                    
+                </div>
+                
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        <footer>
+            <div class="footer-content">
+                <p>© 2025 皮卡导航中心 
+                <p>版权所有 | 打造一站式资源服务平台</p>
+                <p>温馨提示：请遵守相关法律法规，合理使用网络资源</p>
+                <div class="footer-links">
+                    <a href="#">隐私政策</a>
+                    <a href="#">使用条款</a>
+                    <a href="#">关于我们</a>
+                    <a href="#">联系我们</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- 引入粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // 初始化粒子背景
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 1000 } },
+                color: { value: "#4ecca3" },
+                shape: { type: "circle" },
+                opacity: { value: 0.4, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4ecca3",
+                    opacity: 0.3,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            }
+        });
+        
+        // 添加悬停效果到导航项
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-8px)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // 添加浮动动画到logo
+        const logoIcon = document.querySelector('.logo-icon');
+        logoIcon.style.animation = 'float 4s ease-in-out infinite';
+    </script>
+</body>
+</html>
